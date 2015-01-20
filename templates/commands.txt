@@ -1,0 +1,2 @@
+ll,linearlayout,LinearLayout
+llns,linearlayout_ns, LinearLayout as parent

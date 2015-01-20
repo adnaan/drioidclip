@@ -1,0 +1,4 @@
+#show help read commands.txt
+#on command, find the mapped file and 1) copy to clipboard 2) create file
+#copies to clipboard by default: droidclip <select-layout>
+#create file: droidclip <select-layout> -o filename.xml

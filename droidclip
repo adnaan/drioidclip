@@ -1,0 +1,52 @@
+#!/bin/bash
+# ------------------------------------------------------------------
+# [Author] adnaan
+# [Description]: A dumb(as in Dumb as a Dodo) script to copy android code snippets. Collection of snippets is the useful thing here.
+#
+# Dependency:
+#    xclip
+# ------------------------------------------------------------------
+
+USAGE="\nUsage: \n \t droidclip <select-template-command> , Copies to clipboard \n \t droidclip <select-template-command> <filename.xml> , Outputs to a file\n\nExample: \n\t droidclip ll #copies LinearLayout template to clipboard. \n\t droidclip ll mylayout.xml #copies LinearLayout to file. \n\nAvaliable Templates: \n"
+TEMPLATES_DIR=./templates
+function usage()
+{
+	echo -e $USAGE
+	while IFS=, read col1 col2 col3
+	do
+		echo -e "\t$col1 : $col3"
+	done < commands.txt
+}
+
+function copy()
+{	
+	while IFS=, read col1 col2 col3
+	do
+		if [ "$col1" = "$2" ] ; then
+			if [ $1 -eq 1 ] ; then
+				cat $TEMPLATES_DIR/$col2".xml" | xclip -selection c
+				echo "Copied " $col3 " to clipboard!"
+			elif [ $1 -eq 2 ] ; then
+				cat $TEMPLATES_DIR/$col2".xml" >> $3
+				echo "Appended " $col3 " to file: " $3 "!"
+			fi 
+		return
+		fi
+	done < commands.txt 
+	echo "command not found"
+	usage
+}
+
+which xclip &>/dev/null
+if [ $? -ne 0 ] ; then
+	echo "Please install xclip. "
+	exit 1;
+fi
+
+if [ $# -eq 0 ] || [ $# -ge 3 ] ; then
+	usage
+	exit 1;
+elif [ $# -le 2 ] ; then
+	copy $# $1 $2
+fi 
+
